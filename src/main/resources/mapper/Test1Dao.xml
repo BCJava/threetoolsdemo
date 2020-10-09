@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bcsoft.interfacedemo.dao.Test1Dao">
+
+    <resultMap type="cn.bcsoft.interfacedemo.entity.Test1" id="Test1Map">
+        <result property="rId" column="r_id" jdbcType="INTEGER"/>
+        <result property="tt" column="tt" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="Test1Map">
+        select
+          r_id, tt
+        from javatest.test1
+        where r_id = #{idd}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="Test1Map">
+        select
+          r_id, tt
+        from javatest.test1
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="Test1Map">
+        select
+        r_id, tt
+        from javatest.test1
+        <where>
+            <if test="rId != null">
+                and r_id = #{rId}
+            </if>
+            <if test="tt != null and tt != ''">
+                and tt = #{tt}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="" useGeneratedKeys="true">
+        insert into javatest.test1(r_id, tt)
+        values (#{rId}, #{tt})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update javatest.test1
+        <set>
+            <if test="rId != null">
+                r_id = #{rId},
+            </if>
+            <if test="tt != null and tt != ''">
+                tt = #{tt},
+            </if>
+        </set>
+        where r_id = #{rId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from javatest.test1 where r_id = #{idd}
+    </delete>
+
+</mapper>
